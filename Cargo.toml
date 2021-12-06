@@ -1,0 +1,20 @@
+[package]
+name = "advent-of-code-2021"
+version = "0.1.0"
+authors = ["Sean McCauliff <smccauliff@linkedin.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+ringbuf = "0.2.6"
+
+[lib]
+bench = false
+test = false
+doc = false
+path = "src/lib/a2021lib.rs"
+name = "a2021"
+
+[[bin]]
+name = "dec1"
+path = "src/dec1/dec1.rs"
