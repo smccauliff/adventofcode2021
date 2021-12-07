@@ -18,3 +18,7 @@ name = "a2021"
 [[bin]]
 name = "dec1"
 path = "src/dec1/main.rs"
+
+[[bin]]
+name = "dec2"
+path = "src/dec2/main.rs"

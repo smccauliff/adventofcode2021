@@ -47,35 +47,17 @@ pub mod dec1 {
 fn test_depthscanner() {
     let mut depth_scanner = DepthScanner::new(1);
     const TEST_INPUT: &'static [&'static str] = &["199", "200", "208", "210", "200",  "207", "240", "269", "260", "263"];
-    // TEST_INPUT.iter().for_each(| s : &&str| depth_scanner.process_line(&s.to_string()));
-    // assert_eq!(7, depth_scanner.final_count());
-
-    // depth_scanner = DepthScanner::new(3);
-    // TEST_INPUT.iter().for_each(| s : &&str| depth_scanner.process_line(&s.to_string()));
-    // assert_eq!(5, depth_scanner.final_count());
+    TEST_INPUT.iter().for_each(| s : &&str| depth_scanner.process_line(&s.to_string()));
+    assert_eq!(7, depth_scanner.final_count());
 
     depth_scanner = DepthScanner::new(3);
-    depth_scanner.process_line(&"1".to_string());
-    depth_scanner.process_line(&"2".to_string());
-    depth_scanner.process_line(&"3".to_string());
-    depth_scanner.process_line(&"4".to_string());  //1
-    depth_scanner.process_line(&"5".to_string());  //2
-    depth_scanner.process_line(&"0".to_string());  //2
-    depth_scanner.process_line(&"2".to_string());  //2
-    depth_scanner.process_line(&"3".to_string());  //2
-    depth_scanner.process_line(&"4".to_string());  //3
-    depth_scanner.process_line(&"5".to_string());  //4
-    depth_scanner.process_line(&"6".to_string());  //5
-    depth_scanner.process_line(&"10".to_string()); //6
-    depth_scanner.process_line(&"9".to_string());  //7
-    depth_scanner.process_line(&"8".to_string());  //7
-    depth_scanner.process_line(&"7".to_string());  //7
-    println!("final depth {}", depth_scanner.final_count());
+    TEST_INPUT.iter().for_each(| s : &&str| depth_scanner.process_line(&s.to_string()));
+    assert_eq!(5, depth_scanner.final_count());
 }
 
 
 fn main() {
-    // wrong answer: 1754, 1755
+    // wrong answer for window size 3: 1754, 1755
     let args: Vec<String> = env::args().collect();
     let look_behind : usize = args[1].parse().unwrap();
     println!("{}", look_behind);
