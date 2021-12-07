@@ -1,51 +1,31 @@
-mod example;
-
 use std::env;
 use a2021::process_lines;
-use ringbuf::RingBuffer;
-use ringbuf::Consumer;
-use ringbuf::Producer;
+use a2021::WindowOperator;
 
 
 pub struct DepthScanner {
     prev : u32,
     count : u32,
-    ring_buffer : RingBuffer<u32>,
-    producer : Option<Producer<u32>>,
-    consumer : Option<Consumer<u32>>,
+    window_operator : WindowOperator,
 }
 
 impl DepthScanner {
-    pub fn new(look_behind : usize) -> DepthScanner {
-        let mut me = DepthScanner{
+    pub fn new(window_size : usize) -> DepthScanner {
+        DepthScanner{
             prev : u32::MAX,
             count : 0,
-            ring_buffer : RingBuffer::<u32>::new(look_behind),
-            producer : None,
-            consumer : None,
-        };
-        me.producer = Some(me.ring_buffer.split().0);
-        me.consumer = Some(me.ring_buffer.split().1);
-
-        return me;
+            window_operator : WindowOperator::new(window_size),
+        }
     }
 
     pub fn process_line(&mut self, line : &String) {
         let n : u32 = line.parse().unwrap();
-        if self.producer.unwrap().is_full() {
-            self.consumer.unwrap().pop();
-        }
-        self.producer.unwrap().push(n).unwrap();
+        let sum = self.window_operator.add_and_evaluate(n);
 
-        let mut window_count : u32 = 0;
-        self.consumer.unwrap().for_each(|depth : &u32| {
-            //println!("{}", depth);
-            window_count += depth;
-        });
-        if self.prev < window_count {
+        if self.prev < sum {
             self.count = self.count + 1;
         }
-        self.prev = window_count;
+        self.prev = sum;
     }
 
     pub fn final_count(&self) -> u32 {
